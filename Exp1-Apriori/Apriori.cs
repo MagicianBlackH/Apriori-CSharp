@@ -82,7 +82,7 @@ namespace Exp1_Apriori
             Console.WriteLine("OriginData:");
             for (int i = 0; i < this.originDataMap.Count; i++)
             {
-                Console.Write(i + "\t");
+                Console.Write("\t" + (i + 1) + "\t");
                 List<string> readyToPrint = new List<string>();
                 for (int j = 0; j < this.originDataMap[i].Count; j++)
                 {
