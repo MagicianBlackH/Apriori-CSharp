@@ -139,6 +139,60 @@ namespace Exp1_Apriori
             }
             // 结果加入 iterationResult
             this.iterationResult.Add(one);
+
+            // 迭代频繁项集
+            int it = 0;
+            while (true)
+            {
+                if (this.iterationResult[it].Count <= 1)
+                {
+                    break;
+                }
+                // 将上一次频繁项集结果的 Key 转为二维表，方便比对和拼接
+                List<List<string>> last = new List<List<string>>();
+                foreach (string key in this.iterationResult[it].Keys)
+                {
+                    List<string> temp = new List<string>(key.Split(','));
+                    temp.Sort((s1, s2) => s1.CompareTo(s2));
+                    last.Add(temp);
+                }
+                // 拼接后的二维表
+                List<List<string>> conjTable = new List<List<string>>();
+                for (int i = 0; i < last.Count; i++)
+                {
+                    // 保存当前数据项要拼接的项
+                    List<string> toConj = new List<string>();
+                    for (int j = i + 1; j < last.Count; j++)
+                    {
+                        // 二维表每一行逐项一一比对确定拼接项目，由于排过序，可以直接按下标对比
+                        bool canConj = true;
+                        for (int k = 0; k < it; i++) 
+                        {
+                            if (!last[i][k].Equals(last[j][k]))
+                            {
+                                canConj = false;
+                                break;
+                            }
+                        }
+                        if (canConj)
+                        {
+                            toConj.Add(last[j][it]);
+                        }
+                    }
+                    // 拼接并存入二维表 conjTable
+                    foreach (string item in toConj)
+                    {
+                        List<string> conj = new List<string>(last[i]);
+                        conj.Add(item);
+                        conjTable.Add(conj);
+                    }  
+                }
+                // TODO: 拼接后的二维表与原数据二维表进行求频繁项集
+
+                // it++;
+                // 未开发完，直接跳出循环以免死循环
+                break;
+            }
         }
 
         /**
