@@ -40,7 +40,11 @@ namespace Exp1_Apriori
             HashSet<string> itemSet = new HashSet<string>();
             for (int i = 0; i < originDataList.Count; i++)
             {
-                List<string> temp = new List<string>(originDataList[i].Split(", "));
+                List<string> temp = new List<string>(originDataList[i].Split(','));
+                for (int j = 0; j < temp.Count; j++)
+                {
+                    temp[j] = temp[j].Trim();
+                }
                 foreach (string item in temp)
                 {
                     itemSet.Add(item);
@@ -58,7 +62,11 @@ namespace Exp1_Apriori
             // 存入数据下标映射
             for (int i = 0; i < originDataList.Count; i++)
             {
-                List<string> temp = new List<string>(originDataList[i].Split(", "));
+                List<string> temp = new List<string>(originDataList[i].Split(','));
+                for (int j = 0; j < temp.Count; j++)
+                {
+                    temp[j] = temp[j].Trim();
+                }
                 List<bool> tempMap = new List<bool>(itemSet.Count);
                 for (int j = 0; j < itemSet.Count; j++)
                 {
