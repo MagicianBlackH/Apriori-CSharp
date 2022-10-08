@@ -177,6 +177,10 @@ namespace Exp1_Apriori
             {
                 if (this.iterationResult[it].Count <= 1)
                 {
+                    if (this.iterationResult[it].Count == 0)
+                    {
+                        this.iterationResult.RemoveAt(it);
+                    }
                     break;
                 }
                 // 将上一次频繁项集结果的 Key 转为二维表，方便比对和拼接
