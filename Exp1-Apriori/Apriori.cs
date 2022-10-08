@@ -107,6 +107,37 @@ namespace Exp1_Apriori
         private void Iterate()
         {
             // TODO: 迭代算法实现，HPC负责
+            int oriCount = this.originDataTable.Count;
+            if (oriCount <= 0)
+            {
+                return;
+            }
+            // 从 originDataTable 得到一次项集
+            Dictionary<string, int> one = new Dictionary<string, int>();
+            for (int i = 0; i < oriCount; i++)
+            {
+                for (int j = 0; j < this.originDataTable[i].Count; j++)
+                {
+                    if (one.ContainsKey(this.originDataTable[i][j]))
+                    {
+                        one[this.originDataTable[i][j]] += 1;
+                    }
+                    else
+                    {
+                        one.Add(this.originDataTable[i][j], 1);
+                    }
+                }
+            }
+            // 剔除操作，得到一次频繁项集
+            foreach (KeyValuePair<string, int> item in one)
+            {
+                if (item.Value < this.support)
+                {
+                    one.Remove(item.Key);
+                }
+            }
+            // 结果加入 iterationResult
+            this.iterationResult.Add(one);
         }
 
         /**
