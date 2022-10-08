@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Exp1_Apriori
 {
@@ -8,13 +10,9 @@ namespace Exp1_Apriori
         static void Main(string[] args)
         {
             // Main函数主要写使用逻辑，Apriori算法实现及置信度检验等写于Apriori.cs文件
-            List<string> test = new List<string>();
-            test.Add("牛奶,面包");
-            test.Add("面包,尿布,啤酒,鸡蛋");
-            test.Add("牛奶,尿布,啤酒,可乐");
-            test.Add("面包,牛奶,尿布,啤酒");
-            test.Add("面包,牛奶,尿布,可乐");
-            Apriori apriori_test = new Apriori(3, 1, test);
+            string[] data = File.ReadAllLines(@"..\..\..\example.txt", Encoding.UTF8);
+            List<string> dataList = new List<string>(data);
+            Apriori apriori_test = new Apriori(12, 1, dataList);
             apriori_test.ShowOriginData();
             Console.WriteLine();
             apriori_test.ShowIteration();
