@@ -11,7 +11,7 @@ namespace Exp1_Apriori
         // 支持度
         private int support;
         // 置信度
-        private int confidence;
+        private double confidence;
         // 原数据数据项映射表，true表示有，false表示没有
         private List<List<bool>> originDataMap;
         // 数据下标映射表
@@ -27,10 +27,10 @@ namespace Exp1_Apriori
          * confidence - 初始化置信度
          * data - 数据，注意每条数据项要用英文逗号隔开
          */
-        public Apriori (int support, int confidence, List<string> data)
+        public Apriori (double support, double confidence, List<string> data)
         {
             // 初始化变量
-            this.support = support;
+            this.support = (int)(support * data.Count);
             this.confidence = confidence;
             this.originDataMap = new List<List<bool>>();
             this.indexMap = new Hashtable();
@@ -100,6 +100,7 @@ namespace Exp1_Apriori
          */
         public void ShowIteration()
         {
+            Console.WriteLine("Support min: " + this.support.ToString() + "\n");
             for (int i = 0; i < this.iterationResult.Count; i++)
             {
                 Console.WriteLine("Iteration_" + (i + 1) + ":");
