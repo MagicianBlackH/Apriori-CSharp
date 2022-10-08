@@ -201,7 +201,7 @@ namespace Exp1_Apriori
                     {
                         // 二维表每一行逐项一一比对确定拼接项目，由于排过序，可以直接按下标对比
                         bool canConj = true;
-                        for (int k = 0; k < it; i++) 
+                        for (int k = 0; k < it; k++) 
                         {
                             if (!last[i][k].Equals(last[j][k]))
                             {
