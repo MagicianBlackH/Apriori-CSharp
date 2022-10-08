@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Text;
 using System.Linq;
 
@@ -11,8 +12,10 @@ namespace Exp1_Apriori
         private int support;
         // 置信度
         private int confidence;
-        // 原数据数据项二维表
-        private List<List<string>> originDataTable;
+        // 原数据数据项映射表，true表示有，false表示没有
+        private List<List<bool>> originDataMap;
+        // 数据下标映射表
+        private Hashtable indexMap;
         // 保存每次迭代的频繁项集
         private List<Dictionary<string, int>> iterationResult;
         // 保存置信度
@@ -29,15 +32,43 @@ namespace Exp1_Apriori
             // 初始化变量
             this.support = support;
             this.confidence = confidence;
-            this.originDataTable = new List<List<string>>();
+            this.originDataMap = new List<List<bool>>();
+            this.indexMap = new Hashtable();
             this.iterationResult = new List<Dictionary<string, int>>();
             this.confidenceResult = new Dictionary<string, double>();
             List<string> originDataList = new List<string>(data);
+            HashSet<string> itemSet = new HashSet<string>();
             for (int i = 0; i < originDataList.Count; i++)
             {
                 List<string> temp = new List<string>(originDataList[i].Split(','));
-                temp.Sort();
-                this.originDataTable.Add(temp);
+                foreach (string item in temp)
+                {
+                    itemSet.Add(item);
+                }
+            }
+            // 根据数据项个数建立下标映射
+            int index = 0;
+            foreach (string item in itemSet)
+            {
+                // 既能用项找下标，也能用下标找项
+                this.indexMap.Add(item, index);
+                this.indexMap.Add(index, item);
+                index++;
+            }
+            // 存入数据下标映射
+            for (int i = 0; i < originDataList.Count; i++)
+            {
+                List<string> temp = new List<string>(originDataList[i].Split(','));
+                List<bool> tempMap = new List<bool>(itemSet.Count);
+                for (int j = 0; j < itemSet.Count; j++)
+                {
+                    tempMap.Add(false);
+                }
+                foreach (string item in temp)
+                {
+                    tempMap[(int)indexMap[item]] = true;
+                }
+                originDataMap.Add(tempMap);
             }
             // 运行算法
             this.Run();
@@ -49,21 +80,18 @@ namespace Exp1_Apriori
         public void ShowOriginData()
         {
             Console.WriteLine("OriginData:");
-            for (int i = 0; i < this.originDataTable.Count; i++)
+            for (int i = 0; i < this.originDataMap.Count; i++)
             {
                 Console.Write(i + "\t");
-                for (int j = 0; j < this.originDataTable[i].Count; j++)
+                List<string> readyToPrint = new List<string>();
+                for (int j = 0; j < this.originDataMap[i].Count; j++)
                 {
-                    if (j == 0)
+                    if (this.originDataMap[i][j])
                     {
-                        Console.Write(this.originDataTable[i][j]);
-                    } 
-                    else
-                    {
-                        Console.Write(", " + this.originDataTable[i][j]);
+                        readyToPrint.Add(indexMap[j].ToString());
                     }
                 }
-                Console.WriteLine();
+                Console.WriteLine(string.Join(',', readyToPrint.ToArray()));
             }
         }
 
@@ -108,24 +136,27 @@ namespace Exp1_Apriori
         private void Iterate()
         {
             // TODO: 迭代算法实现，HPC负责
-            int oriCount = this.originDataTable.Count;
+            int oriCount = this.originDataMap.Count;
             if (oriCount <= 0)
             {
                 return;
             }
-            // 从 originDataTable 得到一次项集
+            // 从 originDataMap 得到一次项集
             Dictionary<string, int> one = new Dictionary<string, int>();
             for (int i = 0; i < oriCount; i++)
             {
-                for (int j = 0; j < this.originDataTable[i].Count; j++)
+                for (int j = 0; j < this.originDataMap[i].Count; j++)
                 {
-                    if (one.ContainsKey(this.originDataTable[i][j]))
+                    if (this.originDataMap[i][j])
                     {
-                        one[this.originDataTable[i][j]] += 1;
-                    }
-                    else
-                    {
-                        one.Add(this.originDataTable[i][j], 1);
+                        if (one.ContainsKey(this.indexMap[j].ToString()))
+                        {
+                            one[this.indexMap[j].ToString()] += 1;
+                        }
+                        else
+                        {
+                            one.Add(this.indexMap[j].ToString(), 1);
+                        }
                     }
                 }
             }
