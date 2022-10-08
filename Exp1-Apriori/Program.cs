@@ -12,8 +12,10 @@ namespace Exp1_Apriori
             test.Add("hpc,lgh,gsh,fdx");
             test.Add("lgh,gsh,hpc");
             test.Add("fdx,gsh,lgh");
-            Apriori apriori_test = new Apriori(1, 1, test);
+            Apriori apriori_test = new Apriori(3, 1, test);
             apriori_test.ShowOriginData();
+            Console.WriteLine();
+            apriori_test.ShowIteration();
         }
     }
 }

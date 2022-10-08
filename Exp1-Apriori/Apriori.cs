@@ -48,6 +48,7 @@ namespace Exp1_Apriori
          */
         public void ShowOriginData()
         {
+            Console.WriteLine("OriginData:");
             for (int i = 0; i < this.originDataTable.Count; i++)
             {
                 Console.Write(i + "\t");
