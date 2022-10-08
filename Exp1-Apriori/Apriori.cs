@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Exp1_Apriori
 {
@@ -13,9 +14,9 @@ namespace Exp1_Apriori
         // 原数据数据项二维表
         private List<List<string>> originDataTable;
         // 保存每次迭代的频繁项集
-        private List<List<KeyValuePair<string, int>>> iterationResult;
+        private List<Dictionary<string, int>> iterationResult;
         // 保存置信度
-        private List<KeyValuePair<string, double>> confidenceResult;
+        private Dictionary<string, double> confidenceResult;
 
         /** 
          * 构造函数
@@ -29,8 +30,8 @@ namespace Exp1_Apriori
             this.support = support;
             this.confidence = confidence;
             this.originDataTable = new List<List<string>>();
-            this.iterationResult = new List<List<KeyValuePair<string, int>>>();
-            this.confidenceResult = new List<KeyValuePair<string, double>>();
+            this.iterationResult = new List<Dictionary<string, int>>();
+            this.confidenceResult = new Dictionary<string, double>();
             List<string> originDataList = new List<string>(data);
             for (int i = 0; i < originDataList.Count; i++)
             {
@@ -73,9 +74,12 @@ namespace Exp1_Apriori
             for (int i = 0; i < this.iterationResult.Count; i++)
             {
                 Console.WriteLine("Iteration_" + (i + 1) + ":");
-                for (int j = 0; j < this.iterationResult[i].Count; j++)
+                // 按 Key 排序一下再输出，好看
+                List<KeyValuePair<string, int>> dicList = this.iterationResult[i].ToList();
+                dicList.Sort((p1, p2) => p1.Key.CompareTo(p2.Key));
+                for (int j = 0; j < dicList.Count; j++)
                 {
-                    Console.WriteLine("\t" + this.iterationResult[i][j].Key + "\t" + this.iterationResult[i][j].Value);
+                    Console.WriteLine("\t" + dicList[j].Key + "\t" + dicList[j].Value);
                 }
                 Console.WriteLine();
             }
@@ -87,9 +91,12 @@ namespace Exp1_Apriori
         public void ShowConfidence()
         {
             Console.WriteLine("Confidence：");
-            for (int i = 0; i < this.confidenceResult.Count; i++)
+            // 按 Key 排序一下再输出，好看
+            List<KeyValuePair<string, double>> dicList = this.confidenceResult.ToList();
+            dicList.Sort((p1, p2) => p1.Key.CompareTo(p2.Key));
+            for (int i = 0; i < dicList.Count; i++)
             {
-                Console.WriteLine("\t" + this.confidenceResult[i].Key + " : " + this.confidenceResult[i].Value);
+                Console.WriteLine("\t" + dicList[i].Key + " : " + dicList[i].Value);
             }
             Console.WriteLine();
         }
