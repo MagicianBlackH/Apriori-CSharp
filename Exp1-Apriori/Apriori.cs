@@ -218,11 +218,45 @@ namespace Exp1_Apriori
                         conjTable.Add(conj);
                     }  
                 }
-                // TODO: 拼接后的二维表与原数据二维表进行求频繁项集
+                // 测一下拼接
+                //foreach(List<string> itemlist in conjTable)
+                //{
+                //    foreach(string item in itemlist)
+                //    {
+                //        Console.Write(item + " ");
+                //    }
+                //    Console.WriteLine();
+                //}
+                // 拼接后的二维表与原数据二维表进行求频繁项集
+                Dictionary<string, int> freqSet = new Dictionary<string, int>();
+                for (int i = 0; i < conjTable.Count; i++)
+                {
+                    string key = string.Join(',', conjTable[i].ToArray());
+                    int num = 0;
+                    foreach (List<bool> data in this.originDataMap)
+                    {
+                        bool canAdd = true;
+                        for (int j = 0; j < conjTable[i].Count; j++)
+                        {
+                            if (!data[(int)this.indexMap[conjTable[i][j]]])
+                            {
+                                canAdd = false;
+                                break;
+                            }
+                        }
+                        if (canAdd)
+                        {
+                            num++;
+                        }
+                    }
+                    if (num >= this.support)
+                    {
+                        freqSet.Add(key, num);
+                    }
+                }
+                this.iterationResult.Add(freqSet);
 
-                // it++;
-                // 未开发完，直接跳出循环以免死循环
-                break;
+                it++;
             }
         }
 
