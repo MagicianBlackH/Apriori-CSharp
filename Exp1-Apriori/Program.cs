@@ -23,28 +23,25 @@ namespace Exp1_Apriori
                 List<string> classAndTags = new List<string>(dataList[i].Split(','));
                 bool isComputerScience = false, isPhysics = false, isMathematics = false, isStatistics = false;
                 List<string> dataToRemove = new List<string>();
-                foreach (string item in classAndTags)
+                if (classAndTags.Contains("Computer Science"))
                 {
-                    if (item.Equals("Computer Science"))
-                    {
-                        isComputerScience = true;
-                        dataToRemove.Add(item);
-                    }
-                    if (item.Equals("Physics"))
-                    {
-                        isPhysics = true;
-                        dataToRemove.Add(item);
-                    }
-                    if (item.Equals("Mathematics"))
-                    {
-                        isMathematics = true;
-                        dataToRemove.Add(item);
-                    }
-                    if (item.Equals("Statistics")) 
-                    { 
-                        isStatistics = true;
-                        dataToRemove.Add(item);
-                    }
+                    isComputerScience = true;
+                    dataToRemove.Add("Computer Science");
+                }
+                if (classAndTags.Contains("Physics"))
+                {
+                    isPhysics = true;
+                    dataToRemove.Add("Physics");
+                }
+                if (classAndTags.Contains("Mathematics"))
+                {
+                    isMathematics = true;
+                    dataToRemove.Add("Mathematics");
+                }
+                if (classAndTags.Contains("Statistics"))
+                {
+                    isStatistics = true;
+                    dataToRemove.Add("Statistics");
                 }
                 dataToRemove.ForEach(item => classAndTags.Remove(item));
                 string tagsData = string.Join(',', classAndTags);
