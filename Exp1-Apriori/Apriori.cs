@@ -228,6 +228,7 @@ namespace Exp1_Apriori
                     {
                         List<string> conj = new List<string>(last[i]);
                         conj.Add(item);
+                        conj.Sort((s1, s2) => s1.CompareTo(s2));
                         conjTable.Add(conj);
                     }  
                 }
@@ -278,7 +279,62 @@ namespace Exp1_Apriori
          */
         private void ConfidenceCal()
         {
-            // TODO: 置信度检验，FDX负责
+            if (iterationResult.Count == 1) return;
+            // 遍历所有频繁项集
+            for (int i = 1; i < iterationResult.Count; i++)
+            {
+                foreach (var key in iterationResult[i].Keys)
+                {
+                    // 求子集，然后用真子集进行置信度互推
+                    List<List<string>> subsets = GetRealSubsets(new List<string>(key.Split(',')));
+                    for (int j = 0; j < subsets.Count; j++)
+                    {
+                        if (subsets[j].Count == 0 || subsets[j].Count == i + 1) continue;
+                        for (int k = 0; k < subsets.Count; k++)
+                        {
+                            // 判断是否全集，非全集则无需算置信度
+                            List<string> fullSet = new List<string>(subsets[j]);
+                            fullSet.AddRange(subsets[k]);
+                            fullSet.Sort((s1, s2) => s1.CompareTo(s2));
+                            if (!string.Join(',', fullSet.ToArray()).Equals(key)) continue;
+                            subsets[j].Sort((s1, s2) => s1.CompareTo(s2));
+                            subsets[k].Sort((s1, s2) => s1.CompareTo(s2));
+                            string theKey = string.Join(',', subsets[j].ToArray());
+                            int conditionNum = iterationResult[subsets[j].Count - 1][theKey];
+                            int totalNum = iterationResult[key.Split(',').Length - 1][key];
+                            double conf = totalNum * 1.0 / conditionNum;
+                            if (conf > this.confidence)
+                            {                              
+                                this.confidenceResult.Add("{" + theKey + "} ==> {" + string.Join(',', subsets[k].ToArray()) + "}", conf);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * 求子集
+         * return 一个存储了子集的二维List
+         */
+        private List<List<string>> GetRealSubsets(List<string> data)
+        {
+            int n = data.Count;
+            List<List<string>> res = new List<List<string>>();
+            List<string> t = new List<string>();
+            for (int mask = 0; mask < (1 << n); ++mask)
+            {
+                t.Clear();
+                for (int i = 0; i < n; ++i)
+                {
+                    if ((mask & (1 << i)) != 0)
+                    {
+                        t.Add(data[i]);
+                    }
+                }
+                res.Add(new List<string>(t));
+            }
+            return res;
         }
 
         /**
