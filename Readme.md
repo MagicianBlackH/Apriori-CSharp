@@ -46,7 +46,7 @@ a.ShowIteration();
 a.ShowConfidence();
 ```
 
-![image](https://github.com/MagicianBlackH/my-image-hosting-service/blob/master/Apriori/result.png?raw=true)
+![image](https://github.com/MagicianBlackH/my-image-hosting-service/blob/master/Apriori-CSharp/result.png?raw=true)
 
 需要的话，也可以通过 `ShowOriginData` 展示原数据。
 
@@ -54,4 +54,4 @@ If you like, you can get the origin data by calling `ShowOriginData`. For exampl
 ```C#
 a.ShowOriginData();
 ```
-![image](https://github.com/MagicianBlackH/my-image-hosting-service/blob/master/Apriori/ShowOriginData.png?raw=true)
+![image](https://github.com/MagicianBlackH/my-image-hosting-service/blob/master/Apriori-CSharp/ShowOriginData.png?raw=true)
