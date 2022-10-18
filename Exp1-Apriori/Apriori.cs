@@ -117,7 +117,7 @@ namespace Exp1_Apriori
                 dicList.Sort((p1, p2) => p1.Key.CompareTo(p2.Key));
                 for (int j = 0; j < dicList.Count; j++)
                 {
-                    Console.WriteLine("\t" + dicList[j].Key + "\t" + dicList[j].Value);
+                    Console.WriteLine("\t{ " + dicList[j].Key + " } => " + dicList[j].Value);
                 }
                 Console.WriteLine();
             }
