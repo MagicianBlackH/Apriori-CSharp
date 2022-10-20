@@ -28,7 +28,7 @@ public Apriori (double support, double confidence, List<string> data)
 
 Remember that, each string of data should be separated by a comma. For example:
 
-![image](https://github.com/MagicianBlackH/my-image-hosting-service/blob/master/Apriori/OriginData.png?raw=true)
+![image](https://github.com/MagicianBlackH/my-image-hosting-service/blob/master/Apriori-CSharp/OriginData.png?raw=true)
 
 并且，里面的每一项的前置空格和后置空格在处理时都会被去除。
 
